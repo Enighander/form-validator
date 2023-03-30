@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Form, Button, Alert } from "react-bootstrap";
 
 function App() {
   const initialValues = { username: "", email: "", password: "" };
@@ -24,6 +26,7 @@ function App() {
       console.log(formValues);
     }
   }, [formErrors]);
+  
   const validate = (values) => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -47,52 +50,47 @@ function App() {
 
   return (
     <div className="container">
-      {Object.keys(formErrors).length === 0 && isSubmit ? (
-        <div className="ui message success">Signed in successfully</div>
-      ) : (
-        <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
-      )}
-
-      <form onSubmit={handleSubmit}>
+      {Object.keys(formErrors).length === 0 && isSubmit && <Alert variant="success">Signed in successfully</Alert>}
+      <Form onSubmit={handleSubmit}>
         <h1>Login Form</h1>
-        <div className="ui divider"></div>
-        <div className="ui form">
-          <div className="field">
-            <label>Username</label>
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              value={formValues.username}
-              onChange={handleChange}
-            />
-          </div>
-          <p>{formErrors.username}</p>
-          <div className="field">
-            <label>Email</label>
-            <input
-              type="text"
-              name="email"
-              placeholder="Email"
-              value={formValues.email}
-              onChange={handleChange}
-            />
-          </div>
-          <p>{formErrors.email}</p>
-          <div className="field">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formValues.password}
-              onChange={handleChange}
-            />
-          </div>
-          <p>{formErrors.password}</p>
-          <button className="fluid ui button blue">Submit</button>
-        </div>
-      </form>
+        <hr />
+        <Form.Group controlId="formUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={formValues.username}
+            onChange={handleChange}
+          />
+          <Form.Text className="text-danger">{formErrors.username}</Form.Text>
+        </Form.Group>
+        <Form.Group controlId="formEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="text"
+            name="email"
+            placeholder="Email"
+            value={formValues.email}
+            onChange={handleChange}
+          />
+          <Form.Text className="text-danger">{formErrors.email}</Form.Text>
+        </Form.Group>
+        <Form.Group controlId="formPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formValues.password}
+            onChange={handleChange}
+          />
+          <Form.Text className="text-danger">{formErrors.password}</Form.Text>
+        </Form.Group>
+        <Button variant="primary" type="submit" className="w-100">
+          Submit
+        </Button>
+      </Form>
     </div>
   );
 }
